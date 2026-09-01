@@ -5,9 +5,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm, useWatch } from "react-hook-form";
 import {
-  AlertCircleIcon,
-  CheckCircle2Icon,
-  Clock3Icon,
   Loader2Icon,
   SendIcon,
 } from "lucide-react";
@@ -25,7 +22,6 @@ import {
   PosterContent,
   PosterPreview,
 } from "@/components/workspace/poster-preview";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -107,7 +103,6 @@ export function CreatePosterClient() {
   const [status, setStatus] = useState<
     "idle" | "processing" | "completed" | "failed"
   >("idle");
-  const [apiError, setApiError] = useState("");
 
   const createPosterMutation = useMutation({
     mutationFn: createPoster,
@@ -129,7 +124,6 @@ export function CreatePosterClient() {
         error,
         "Something went wrong while creating the poster.",
       );
-      setApiError(message);
       toast.error("Poster was not created.", {
         description: message,
       });
@@ -190,7 +184,6 @@ export function CreatePosterClient() {
 
     if (latestGeneratedPoster.status === "failed") {
       setStatus("failed");
-      setApiError("Poster generation failed.");
       toast.error("Poster was not created.", {
         description: "Poster generation failed.",
       });
@@ -213,7 +206,6 @@ export function CreatePosterClient() {
   }
 
   function onSubmit(values: Draft) {
-    setApiError("");
     setStatus("processing");
     const posterInput: CreatePosterInput = {
       ...values,
@@ -229,7 +221,7 @@ export function CreatePosterClient() {
 
   return (
     <div className="grid gap-4 px-4 pb-6 xl:grid-cols-[minmax(340px,420px)_minmax(0,1fr)]">
-      <div className="flex flex-col gap-4">
+      <div>
         <Card className="rounded-lg">
           <CardHeader>
             <div className="flex items-start justify-between gap-3">
@@ -328,51 +320,6 @@ export function CreatePosterClient() {
                 </Button>
               </FieldGroup>
             </form>
-          </CardContent>
-        </Card>
-
-        <Card className="rounded-lg">
-          <CardHeader>
-            <CardTitle>Status</CardTitle>
-            <CardDescription>
-              Shows the current poster request state.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {status === "processing" ? (
-              <Alert className="border-neutral-300 bg-white text-neutral-950">
-                <Loader2Icon className="animate-spin" />
-                <AlertTitle>Submitting poster</AlertTitle>
-                <AlertDescription>
-                  Saving the poster fields and generating the preview.
-                </AlertDescription>
-              </Alert>
-            ) : status === "failed" ? (
-              <Alert variant="destructive">
-                <AlertCircleIcon />
-                <AlertTitle>Check the form</AlertTitle>
-                <AlertDescription>
-                  {apiError ||
-                    "Fix the highlighted fields before generating a poster."}
-                </AlertDescription>
-              </Alert>
-            ) : status === "completed" ? (
-              <Alert className="border-emerald-200 bg-emerald-50 text-emerald-950">
-                <CheckCircle2Icon />
-                <AlertTitle>Poster saved</AlertTitle>
-                <AlertDescription>
-                  The latest poster was saved and added to the top of history.
-                </AlertDescription>
-              </Alert>
-            ) : (
-              <Alert>
-                <Clock3Icon />
-                <AlertTitle>Ready</AlertTitle>
-                <AlertDescription>
-                  Submit valid product details to create a poster record.
-                </AlertDescription>
-              </Alert>
-            )}
           </CardContent>
         </Card>
       </div>
