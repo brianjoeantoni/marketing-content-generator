@@ -316,7 +316,7 @@ export function CreatePosterClient() {
                   ) : (
                     <SendIcon />
                   )}
-                  Generate poster
+                  {status === "processing" ? "Generating..." : "Generate poster"}
                 </Button>
               </FieldGroup>
             </form>
