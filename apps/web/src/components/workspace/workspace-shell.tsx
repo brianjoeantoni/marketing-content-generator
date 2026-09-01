@@ -39,7 +39,6 @@ export function WorkspaceShell({
   children: ReactNode
 }) {
   const router = useRouter()
-  // 
   const {
     data: currentUser,
     error: currentUserError,
