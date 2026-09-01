@@ -92,6 +92,7 @@ export function CreatePosterClient() {
     control,
     handleSubmit,
     register,
+    reset,
     setValue,
     formState: { errors },
   } = useForm<Draft>({
@@ -106,15 +107,11 @@ export function CreatePosterClient() {
 
   const createPosterMutation = useMutation({
     mutationFn: createPoster,
-    onSuccess: (poster) => {
-      queryClient.setQueryData<Poster[]>(["posters"], (currentPosters) => [
-        poster,
-        ...(currentPosters ?? []).filter(
-          (currentPoster) => currentPoster.id !== poster.id,
-        ),
-      ]);
+    onSuccess: async (poster) => {
+      await queryClient.invalidateQueries({ queryKey: ["posters"] });
       setGeneratedPoster(poster);
       setStatus(poster.status);
+      reset(starterDraft);
       toast.success("Poster is processing.", {
         description: "You can track the generated poster in history.",
       });
@@ -334,7 +331,7 @@ export function CreatePosterClient() {
           </CardHeader>
           <CardContent>
             <div className="mx-auto w-full max-w-[620px]">
-              <PosterPreview poster={generatedPoster ?? previewDraft} />
+              <PosterPreview poster={previewDraft} />
             </div>
           </CardContent>
         </Card>
