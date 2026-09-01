@@ -1,6 +1,8 @@
 "use client"
 
 import { useRouter } from "next/navigation"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { toast } from "sonner"
 
 import {
   Avatar,
@@ -22,19 +24,44 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import { useCurrentUser } from "@/hooks/use-current-user"
+import { getApiErrorMessage, logout } from "@/lib/api"
 import { ChevronsUpDownIcon, LogOutIcon, UserRoundIcon } from "lucide-react"
 
-export function NavUser({
-  user,
-}: {
-  user: {
-    name: string
-    email: string
-    avatar: string
-  }
-}) {
+const fallbackUser = {
+  name: "Account",
+  email: "Not signed in",
+  avatar: "",
+}
+
+export function NavUser() {
   const { isMobile } = useSidebar()
   const router = useRouter()
+  const queryClient = useQueryClient()
+  const { data: currentUser } = useCurrentUser()
+  const logoutMutation = useMutation({
+    mutationFn: logout,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["currentUser"] })
+      toast.success("Logged out.", {
+        description: "Your session has ended.",
+      })
+      router.push("/login")
+    },
+    onError: (error) => {
+      toast.error("Logout failed.", {
+        description: getApiErrorMessage(error, "Could not log out."),
+      })
+    },
+  })
+
+  const user = currentUser
+    ? {
+        name: currentUser.email.split("@")[0],
+        email: currentUser.email,
+        avatar: "",
+      }
+    : fallbackUser
 
   return (
     <SidebarMenu>
@@ -47,7 +74,9 @@ export function NavUser({
           >
             <Avatar>
               <AvatarImage src={user.avatar} alt={user.name} />
-              <AvatarFallback>DU</AvatarFallback>
+              <AvatarFallback>
+                {user.name.slice(0, 2).toUpperCase()}
+              </AvatarFallback>
             </Avatar>
             <div className="grid flex-1 text-left text-sm leading-tight">
               <span className="truncate font-medium">{user.name}</span>
@@ -66,7 +95,9 @@ export function NavUser({
                 <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                   <Avatar>
                     <AvatarImage src={user.avatar} alt={user.name} />
-                    <AvatarFallback>DU</AvatarFallback>
+                    <AvatarFallback>
+                      {user.name.slice(0, 2).toUpperCase()}
+                    </AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-medium">{user.name}</span>
@@ -76,12 +107,12 @@ export function NavUser({
               </DropdownMenuLabel>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            {/* <DropdownMenuItem>
               <UserRoundIcon />
-              Mock account
+              Account
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => router.push("/login")}>
+            <DropdownMenuSeparator /> */}
+            <DropdownMenuItem onClick={() => logoutMutation.mutate()}>
               <LogOutIcon />
               Log out
             </DropdownMenuItem>

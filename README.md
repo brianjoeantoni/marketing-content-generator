@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Marketing Content Generator
 
-## Getting Started
+Frontend-only prototype for the SWE tech test. The app lets a user fill product details, simulate poster generation, preview a beach-themed marketing poster, and browse mock previous generations.
 
-First, run the development server:
+## Current Scope
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Next.js App Router
+- React with TypeScript
+- Tailwind CSS
+- shadcn/ui components and blocks
+- Client-side mock auth screens
+- Client-side mock poster generation
+- No backend, API, database, JWT, or file generation yet
+
+## Routes
+
+```txt
+/           redirects to /dashboard
+/login      mock login screen
+/register   mock registration screen
+/dashboard  poster generator workspace
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Run Locally
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm install
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Open `http://localhost:3000`.
 
-## Learn More
+## Validation
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run lint
+npm run build
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Technical Decisions
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- The dashboard uses shadcn's `sidebar-07` block as the base layout.
+- The login and register screens use shadcn's `login-03` block as the base layout.
+- Poster generation is simulated with `setTimeout` so the frontend has the same loading/status behavior the backend will provide later.
+- Generated poster history is local React state for now. It will later come from PostgreSQL through the Express API.
+- The beach poster template is a project-local PNG asset in `public/beach-poster-template.png`, with product text overlaid in React.
 
-## Deploy on Vercel
+## Known Limitations
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Auth is not real yet.
+- Poster records are not persisted after refresh.
+- Export/download is intentionally disabled until backend image generation is added.
+- Poster text layout is frontend-only and will need to be matched by the backend `sharp` renderer later.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Later Backend Phase
+
+The backend will be built from zero as a learning exercise, starting with `server.ts`, then Express middleware, routes, validation, auth cookies, PostgreSQL queries, and image generation.
+
+## AI Tools Used
+
+Codex was used to inspect the tech test PDF and PRD, scaffold the frontend, generate a project-local beach poster template asset, and implement the frontend prototype.

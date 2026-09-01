@@ -148,7 +148,7 @@ authRouter.post("/login", async (req, res) => {
     user: {
       id: user.id,
       email: user.email,
-      createdAt: user.created_at,
+      created_at: user.created_at,
     },
   });
 });

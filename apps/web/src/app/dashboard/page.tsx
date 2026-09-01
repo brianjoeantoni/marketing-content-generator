@@ -1,41 +1,75 @@
-import { AppSidebar } from "@/components/app-sidebar"
-import { DashboardClient } from "@/components/dashboard-client"
+import { BarChart3Icon, FileTextIcon, ImagePlusIcon } from "lucide-react"
+
 import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbList,
-  BreadcrumbPage,
-} from "@/components/ui/breadcrumb"
-import { Separator } from "@/components/ui/separator"
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar"
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { WorkspaceShell } from "@/components/workspace/workspace-shell"
 
 export default function Page() {
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
-          <div className="flex items-center gap-2 px-4">
-            <SidebarTrigger className="-ml-1" />
-            <Separator
-              orientation="vertical"
-              className="mr-2 data-vertical:h-4 data-vertical:self-auto"
-            />
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem>
-                  <BreadcrumbPage>Poster Generator</BreadcrumbPage>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
-          </div>
-        </header>
-        <DashboardClient />
-      </SidebarInset>
-    </SidebarProvider>
+    <WorkspaceShell>
+      <div className="px-4 pb-6 pt-2">
+        <h1 className="text-3xl font-semibold tracking-normal">Dashboard</h1>
+        <p className="mt-4 text-lg text-muted-foreground">
+          Monitor your marketing content workflow from one workspace.
+        </p>
+
+        <div className="mt-6 grid gap-4 md:grid-cols-3">
+          <Card className="rounded-lg">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-base">
+                <ImagePlusIcon className="size-4" />
+                Create
+              </CardTitle>
+              <CardDescription>
+                Start a new poster from product and campaign details.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <a
+                href="/create-poster"
+                className="text-sm font-medium underline-offset-4 hover:underline"
+              >
+                Open creator
+              </a>
+            </CardContent>
+          </Card>
+          <Card className="rounded-lg">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-base">
+                <FileTextIcon className="size-4" />
+                History
+              </CardTitle>
+              <CardDescription>
+                Review saved poster records from your account.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <a
+                href="/history"
+                className="text-sm font-medium underline-offset-4 hover:underline"
+              >
+                View history
+              </a>
+            </CardContent>
+          </Card>
+          <Card className="rounded-lg">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-base">
+                <BarChart3Icon className="size-4" />
+                Overview
+              </CardTitle>
+              <CardDescription>
+                Generation stats and activity summaries will live here later.
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        </div>
+      </div>
+    </WorkspaceShell>
   )
 }

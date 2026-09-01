@@ -19,16 +19,35 @@ function isValidUuid(value: string) {
 
 const postersRouter = Router();
 
+function completePosterAfterDelay(posterId: string) {
+  // complete the poster after 3 seconds
+  setTimeout(async () => {
+    try {
+      await pool.query(
+        `
+        UPDATE posters
+        SET status = $1, updated_at = now()
+        WHERE id = $2 AND status = $3
+        `,
+        ["completed", posterId, "processing"],
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  }, 3000);
+}
+
 postersRouter.post("/", requireAuth, async (req, res) => {
-  const { brandName, productName, productDescription, price } = req.body;
+  const { brand_name, product_name, product_description, price } =
+    req.body ?? {};
 
   const authenticatedReq = req as AuthenticatedRequest;
   const userId = authenticatedReq.user.id;
 
   if (
-    !isNonEmptyString(brandName) ||
-    !isNonEmptyString(productName) ||
-    !isNonEmptyString(productDescription) ||
+    !isNonEmptyString(brand_name) ||
+    !isNonEmptyString(product_name) ||
+    !isNonEmptyString(product_description) ||
     !isNonEmptyString(price)
   ) {
     res.status(400).json({
@@ -39,9 +58,9 @@ postersRouter.post("/", requireAuth, async (req, res) => {
 
   // normalize the input
   const posterInput = {
-    brandName: brandName.trim(),
-    productName: productName.trim(),
-    productDescription: productDescription.trim(),
+    brand_name: brand_name.trim(),
+    product_name: product_name.trim(),
+    product_description: product_description.trim(),
     price: price.trim(),
   };
 
@@ -71,15 +90,17 @@ postersRouter.post("/", requireAuth, async (req, res) => {
     `,
       [
         userId,
-        posterInput.brandName,
-        posterInput.productName,
-        posterInput.productDescription,
+        posterInput.brand_name,
+        posterInput.product_name,
+        posterInput.product_description,
         posterInput.price,
-        "completed",
+        "processing",
       ],
     );
 
     const poster = result.rows[0];
+
+    completePosterAfterDelay(poster.id);
 
     res.status(201).json({
       poster,

@@ -16,7 +16,7 @@ function getJwtSecret() {
 type AuthenticatedUser = {
   id: string;
   email: string;
-  createdAt: Date;
+  created_at: Date;
 };
 
 type AuthenticatedRequest = Request & {
@@ -71,7 +71,7 @@ async function requireAuth(req: Request, res: Response, next: NextFunction) {
     authenticatedReq.user = {
       id: user.id,
       email: user.email,
-      createdAt: user.created_at,
+      created_at: user.created_at,
     };
     next();
   } catch {
