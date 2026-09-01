@@ -56,8 +56,8 @@ http://localhost:4000
 ## Technical Decisions
 
 - The project uses a monorepo structure with `apps/web` for the frontend and `apps/api` for the backend.
-- Next.js is used for the frontend application and routing. 
-(I could build the same UI with React + Vite, but Next.js gives more application structure for a full-stack style product.)
+- Next.js is used for the frontend application and routing.
+  (I could build the same UI with React + Vite, but Next.js gives more application structure for a full-stack style product.)
 - Express is used for the API as per the Tech Stack requirements.
 - PostgreSQL is used to persist users and poster records, with UUID primary keys and a foreign key from `posters.user_id` to `users.id` so poster ownership is known.
 - Docker Compose is used to make the local database setup reproducible.
@@ -72,6 +72,7 @@ http://localhost:4000
 ## Known Limitations
 
 - Poster generation is simulated and does not call a real AI or image generation service.
+- The poster shown in the UI is a frontend-rendered preview using a fixed template asset, not a generated image file stored by the backend, although the db has prepared a `image_path` column.
 - The simulated background processing uses a manual setTimeout, see completePosterAfterDelay in apps\api\src\routes\posters.ts
 - Backend request validation is currently manual instead of schema-driven.
 - Download/export functionality is intentionally not implemented yet.
@@ -85,6 +86,7 @@ http://localhost:4000
 - Integrate a real AI generation API. For an MVP, I would likely start with Cloudflare Workers AI because it has a generous free tier
   (including a completely free model -> stable-diffusion-xl-lightning -> https://developers.cloudflare.com/workers-ai/models/stable-diffusion-xl-lightning/) and would be practical for early testing.
 - Once real AI generation is implemented, I would evaluate whether generation metadata should live in PostgreSQL as `JSONB` or in a document database such as MongoDB, depending on how flexible and query-heavy that metadata becomes.
+- Store generated poster images in object storage (possibly using AWS S3 / Cloudflare R2), while keeping only the `image_path` reference in PostgreSQL.
 - Implement real poster export/download.
 - Add dashboard metrics for created posters and generation outcomes.
 - Add CI checks for typechecking, linting, and builds.
