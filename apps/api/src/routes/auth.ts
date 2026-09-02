@@ -41,7 +41,10 @@ function setAuthCookie(res: Response, userId: string) {
 authRouter.post("/register", async (req, res) => {
   const { email, password, confirmPassword } = req.body ?? {};
 
-  if (!email || !password || !confirmPassword) {
+  const emailClean =
+    typeof email === "string" ? email.trim().toLowerCase() : "";
+
+  if (!emailClean || !password || !confirmPassword) {
     res.status(400).json({
       message: "Email, password, and confirm password are required.",
     });
@@ -72,7 +75,7 @@ authRouter.post("/register", async (req, res) => {
     VALUES ($1, $2)
     RETURNING id, email, created_at
     `,
-      [email, passwordHash],
+      [emailClean, passwordHash],
     );
 
     const user = result.rows[0];
@@ -107,8 +110,10 @@ authRouter.post("/register", async (req, res) => {
 
 authRouter.post("/login", async (req, res) => {
   const { email, password } = req.body ?? {};
+  const emailClean =
+    typeof email === "string" ? email.trim().toLowerCase() : "";
 
-  if (!email || !password) {
+  if (!emailClean || !password) {
     res.status(400).json({
       message: "Email and password are required.",
     });
@@ -121,7 +126,7 @@ authRouter.post("/login", async (req, res) => {
     FROM users
     WHERE email = $1
     `,
-    [email],
+    [emailClean],
   );
 
   const user = result.rows[0];
