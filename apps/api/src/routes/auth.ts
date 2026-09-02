@@ -22,9 +22,9 @@ function getJwtSecret() {
 function setAuthCookie(res: Response, userId: string) {
   const token = jwt.sign(
     {
-      userId,
+      userId, // creates jwt token with this payload
     },
-    getJwtSecret(),
+    getJwtSecret(), // signs the payload
     {
       expiresIn: "7d",
     },
@@ -62,6 +62,7 @@ authRouter.post("/register", async (req, res) => {
     return;
   }
 
+  // hashes password before saving in db
   const passwordHash = await bcrypt.hash(password, 10);
 
   try {
@@ -87,7 +88,7 @@ authRouter.post("/register", async (req, res) => {
       typeof error === "object" &&
       error !== null &&
       "code" in error &&
-      error.code === "23505"
+      error.code === "23505" // unique_violation error code from postgres
     ) {
       res.status(409).json({
         // 409 Conflict with existing data
@@ -154,7 +155,7 @@ authRouter.post("/login", async (req, res) => {
 });
 
 authRouter.get("/me", requireAuth, (req, res) => {
-  const authenticatedReq = req as AuthenticatedRequest;
+  const authenticatedReq = req as AuthenticatedRequest; // type assertion
 
   res.json({
     user: authenticatedReq.user,
