@@ -1,8 +1,8 @@
 # Marketing Content Generator
 
-Marketing Content Generator is a small production-ready MVP for creating and reviewing campaign poster records. It includes a Next.js frontend, an Express API, PostgreSQL persistence, cookie-based auth, and a simulated async poster generation flow.
+Marketing Content Generator is a small production-ready MVP for creating and reviewing campaign poster records. It includes a Next.js frontend, an Express API/BE, PostgreSQL DB, cookie-based auth, and a simulated async poster generation flow.
 
-The core workflow is complete end to end: users can register, log in, create a poster, see it move from `processing` to `completed`, view poster history, open poster details, and log out.
+The core workflow: users can register, log in, create a poster, see it move from `processing` to `completed` (in /history), view poster history, open poster details, and log out.
 
 ## How To Run The Application
 
