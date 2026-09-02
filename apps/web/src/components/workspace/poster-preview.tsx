@@ -11,28 +11,15 @@ export type PosterContent = {
   price: string
 }
 
-const fallbackPoster: PosterContent = {
-  brand_name: "Sunshield",
-  product_name: "Tropical Glow",
-  product_description:
-    "SPF 50+ Broad Spectrum, Water Resistant (80 Min), Lightweight, Non-Greasy Formula, Perfect for beach days!",
-  price: "$14.99",
-}
-
 export function PosterPreview({
   poster,
   className,
   compact = false,
 }: {
-  poster?: Partial<PosterContent>
+  poster: PosterContent
   className?: string
   compact?: boolean
 }) {
-  const content = {
-    ...fallbackPoster,
-    ...poster,
-  }
-
   return (
     <div
       className={cn(
@@ -52,19 +39,19 @@ export function PosterPreview({
       <div className="absolute bottom-[17%] left-[8%] right-[8%] top-[43%] flex flex-col overflow-hidden px-[4.5%] py-[4%] text-neutral-950">
         <p
           className={cn(
-            "break-words font-black uppercase leading-[0.95]",
+            "wrap-break-word font-black uppercase leading-[0.95]",
             compact ? "text-[9px]" : "text-xl"
           )}
         >
-          {content.brand_name}
+          {poster.brand_name}
         </p>
         <p
           className={cn(
-            "mt-[3%] break-words font-extrabold uppercase leading-tight",
+            "mt-[3%] wrap-break-word font-extrabold uppercase leading-tight",
             compact ? "text-[7px]" : "text-base"
           )}
         >
-          {content.product_name}
+          {poster.product_name}
         </p>
         <p
           className={cn(
@@ -72,15 +59,15 @@ export function PosterPreview({
             compact ? "text-[6px]" : "text-sm"
           )}
         >
-          {content.product_description}
+          {poster.product_description}
         </p>
         <p
           className={cn(
-            "mt-auto break-words font-black leading-none",
+            "mt-auto wrap-break-word font-black leading-none",
             compact ? "text-[9px]" : "text-xl"
           )}
         >
-          {content.price}
+          {poster.price}
         </p>
       </div>
     </div>
