@@ -1,4 +1,5 @@
 import { BarChart3Icon, FileTextIcon, ImagePlusIcon } from "lucide-react"
+import Link from "next/link"
 
 import {
   Card,
@@ -30,12 +31,12 @@ export default function Page() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <a
+              <Link
                 href="/create-poster"
                 className="text-sm font-medium underline-offset-4 hover:underline"
               >
                 Open creator
-              </a>
+              </Link>
             </CardContent>
           </Card>
           <Card className="rounded-lg">
@@ -49,12 +50,12 @@ export default function Page() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <a
+              <Link
                 href="/history"
                 className="text-sm font-medium underline-offset-4 hover:underline"
               >
                 View history
-              </a>
+              </Link>
             </CardContent>
           </Card>
           <Card className="rounded-lg">

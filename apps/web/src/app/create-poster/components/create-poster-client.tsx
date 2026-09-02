@@ -4,10 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm, useWatch } from "react-hook-form";
-import {
-  Loader2Icon,
-  SendIcon,
-} from "lucide-react";
+import { Loader2Icon, SendIcon } from "lucide-react";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -134,8 +131,13 @@ export function CreatePosterClient() {
     queryKey: ["poster", generatedPosterId],
     queryFn: () => getPoster(generatedPosterId ?? ""),
     enabled: shouldPollGeneratedPoster,
-    refetchInterval: shouldPollGeneratedPoster ? 1000 : false,
+    refetchInterval: (query) =>
+      query.state.data?.status === "completed" ||
+      query.state.data?.status === "failed"
+        ? false
+        : 1000,
   });
+  const currentStatus = latestGeneratedPoster?.status ?? status;
 
   const draft: Draft = useMemo(
     () => ({
@@ -163,7 +165,6 @@ export function CreatePosterClient() {
       return;
     }
 
-    setGeneratedPoster(latestGeneratedPoster);
     queryClient.setQueryData<Poster[]>(["posters"], (currentPosters) =>
       (currentPosters ?? []).map((currentPoster) =>
         currentPoster.id === latestGeneratedPoster.id
@@ -173,14 +174,12 @@ export function CreatePosterClient() {
     );
 
     if (latestGeneratedPoster.status === "completed") {
-      setStatus("completed");
       toast.success("Poster created.", {
         description: "Your poster has been saved to history.",
       });
     }
 
     if (latestGeneratedPoster.status === "failed") {
-      setStatus("failed");
       toast.error("Poster was not created.", {
         description: "Poster generation failed.",
       });
@@ -307,13 +306,15 @@ export function CreatePosterClient() {
                   </div>
                   <FieldError>{errors.price?.message}</FieldError>
                 </Field>
-                <Button type="submit" disabled={status === "processing"}>
-                  {status === "processing" ? (
+                <Button type="submit" disabled={currentStatus === "processing"}>
+                  {currentStatus === "processing" ? (
                     <Loader2Icon className="animate-spin" />
                   ) : (
                     <SendIcon />
                   )}
-                  {status === "processing" ? "Generating..." : "Generate poster"}
+                  {currentStatus === "processing"
+                    ? "Generating..."
+                    : "Generate poster"}
                 </Button>
               </FieldGroup>
             </form>

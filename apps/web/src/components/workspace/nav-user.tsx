@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/sidebar"
 import { useCurrentUser } from "@/hooks/use-current-user"
 import { getApiErrorMessage, logout } from "@/lib/api"
-import { ChevronsUpDownIcon, LogOutIcon, UserRoundIcon } from "lucide-react"
+import { ChevronsUpDownIcon, LogOutIcon } from "lucide-react"
 
 const fallbackUser = {
   name: "Account",

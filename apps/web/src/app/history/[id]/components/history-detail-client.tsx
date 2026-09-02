@@ -2,14 +2,14 @@
 
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowLeftIcon, DownloadIcon } from "lucide-react";
+import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 
 import { getApiErrorMessage, getPoster } from "@/lib/api";
 import { PosterPreview } from "@/components/workspace/poster-preview";
 import { WorkspaceErrorState } from "@/components/workspace/workspace-error-state";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardContent,
