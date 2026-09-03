@@ -56,7 +56,7 @@ postersRouter.post("/", requireAuth, async (req, res) => {
     return;
   }
 
-  // normalize the input
+  // normalize the input (trim whitespace)
   const posterInput = {
     brand_name: brand_name.trim(),
     product_name: product_name.trim(),

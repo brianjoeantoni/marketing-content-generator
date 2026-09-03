@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-
 import { pool } from "../db.js";
 
 function getJwtSecret() {
@@ -34,7 +33,7 @@ async function requireAuth(req: Request, res: Response, next: NextFunction) {
   }
 
   try {
-    const payload = jwt.verify(token, getJwtSecret()); // throws if token is invalid
+    const payload = jwt.verify(token, getJwtSecret()); // checks if token is valid (not tampered, not expired)
 
     if (
       typeof payload !== "object" ||
@@ -66,7 +65,8 @@ async function requireAuth(req: Request, res: Response, next: NextFunction) {
       return;
     }
 
-    const authenticatedReq = req as AuthenticatedRequest; // treat this req object as an AuthenticatedRequest
+    // Add the authenticated user information onto the request object so the next route handler can use it.
+    const authenticatedReq = req as AuthenticatedRequest;
 
     authenticatedReq.user = {
       id: user.id,
