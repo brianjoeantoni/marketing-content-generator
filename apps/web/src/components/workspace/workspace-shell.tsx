@@ -1,23 +1,23 @@
-"use client"
+"use client";
 
-import { useEffect, type ReactNode } from "react"
-import { useRouter } from "next/navigation"
+import { useEffect, type ReactNode } from "react";
+import { useRouter } from "next/navigation";
 
-import { AppSidebar } from "./app-sidebar"
+import { AppSidebar } from "./app-sidebar";
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbList,
   BreadcrumbPage,
-} from "@/components/ui/breadcrumb"
-import { Separator } from "@/components/ui/separator"
+} from "@/components/ui/breadcrumb";
+import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from "@/components/ui/sidebar"
-import { Skeleton } from "@/components/ui/skeleton"
-import { useCurrentUser } from "@/hooks/use-current-user"
+} from "@/components/ui/sidebar";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useCurrentUser } from "@/hooks/use-current-user";
 
 function WorkspaceShellSkeleton() {
   return (
@@ -30,31 +30,29 @@ function WorkspaceShellSkeleton() {
         <Skeleton className="h-32 rounded-lg" />
       </div>
     </div>
-  )
+  );
 }
 
-export function WorkspaceShell({
-  children,
-}: {
-  children: ReactNode
-}) {
-  const router = useRouter()
+export function WorkspaceShell({ children }: { children: ReactNode }) {
+  const router = useRouter();
   const {
     data: currentUser,
     error: currentUserError,
     isLoading: isCheckingUser,
-  } = useCurrentUser()
+  } = useCurrentUser();
 
   // Redirect to login if user is not logged in
   useEffect(() => {
     if (!isCheckingUser && currentUserError) {
-      router.replace("/login")
+      router.replace("/login");
     }
-  }, [currentUserError, isCheckingUser, router])
+  }, [currentUserError, isCheckingUser, router]);
 
   return (
     <SidebarProvider>
+      {/* left sidebar */}
       <AppSidebar />
+      {/* right content */}
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
           <div className="flex items-center gap-2 px-4">
@@ -79,5 +77,5 @@ export function WorkspaceShell({
         )}
       </SidebarInset>
     </SidebarProvider>
-  )
+  );
 }
