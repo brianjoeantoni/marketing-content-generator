@@ -331,7 +331,7 @@ export function CreatePosterClient() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="mx-auto w-full max-w-[620px]">
+            <div className="mx-auto w-full max-w-155">
               <PosterPreview poster={previewDraft} />
             </div>
           </CardContent>
