@@ -7,6 +7,7 @@ import Link from "next/link";
 import { toast } from "sonner";
 
 import { getApiErrorMessage, getPoster } from "@/lib/api";
+import { formatPosterDate } from "@/lib/date";
 import { PosterPreview } from "@/components/workspace/poster-preview";
 import { WorkspaceErrorState } from "@/components/workspace/workspace-error-state";
 import { buttonVariants } from "@/components/ui/button";
@@ -19,13 +20,6 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
-
-function formatPosterDate(value: string) {
-  return new Intl.DateTimeFormat("en", {
-    dateStyle: "medium",
-    timeStyle: "short",
-  }).format(new Date(value));
-}
 
 function HistoryDetailSkeleton() {
   return (

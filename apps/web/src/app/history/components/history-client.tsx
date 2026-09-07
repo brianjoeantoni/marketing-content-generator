@@ -10,6 +10,7 @@ import {
   getPosters,
   type Poster,
 } from "@/lib/api"
+import { formatPosterDate } from "@/lib/date"
 import { PosterPreview } from "@/components/workspace/poster-preview"
 import { WorkspaceErrorState } from "@/components/workspace/workspace-error-state"
 import { Badge } from "@/components/ui/badge"
@@ -23,14 +24,6 @@ import {
 } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { Skeleton } from "@/components/ui/skeleton"
-
-// helper function for formatting poster dates
-function formatPosterDate(value: string) {
-  return new Intl.DateTimeFormat("en", {
-    dateStyle: "medium",
-    timeStyle: "short",
-  }).format(new Date(value))
-}
 
 // component for rendering a poster card
 function PosterCard({
