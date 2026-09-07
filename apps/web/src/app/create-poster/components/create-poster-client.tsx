@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm, useWatch } from "react-hook-form";
@@ -150,7 +150,7 @@ export function CreatePosterClient() {
     product_description: watchedDraft.product_description ?? "",
     price: watchedDraft.price ?? "",
   };
-  
+
   const characterCount = draft.product_description.length;
   const previewPrice = draft.price ? formatPrice(draft.price) : "";
 
@@ -158,32 +158,6 @@ export function CreatePosterClient() {
     ...draft, // copy all properties from draft into this new object
     price: previewPrice,
   };
-
-  useEffect(() => {
-    if (!latestGeneratedPoster) {
-      return;
-    }
-
-    queryClient.setQueryData<Poster[]>(["posters"], (currentPosters) =>
-      (currentPosters ?? []).map((currentPoster) =>
-        currentPoster.id === latestGeneratedPoster.id
-          ? latestGeneratedPoster
-          : currentPoster,
-      ),
-    );
-
-    if (latestGeneratedPoster.status === "completed") {
-      toast.success("Poster created.", {
-        description: "Your poster has been saved to history.",
-      });
-    }
-
-    if (latestGeneratedPoster.status === "failed") {
-      toast.error("Poster was not created.", {
-        description: "Poster generation failed.",
-      });
-    }
-  }, [latestGeneratedPoster, queryClient]);
 
   // helper function for updating the draft
   function updateDraft(field: keyof Draft, value: string) {
