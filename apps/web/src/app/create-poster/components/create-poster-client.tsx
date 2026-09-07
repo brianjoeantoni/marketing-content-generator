@@ -184,7 +184,7 @@ export function CreatePosterClient() {
 
     createPosterMutation.mutate(posterInput);
   }
-  
+
   return (
     <div className="grid gap-4 px-4 pb-6 xl:grid-cols-[minmax(340px,420px)_minmax(0,1fr)]">
       <div>
@@ -208,6 +208,7 @@ export function CreatePosterClient() {
           <CardContent>
             <form onSubmit={handleSubmit(onSubmit)}>
               <FieldGroup>
+                {/* brand name */}
                 <Field data-invalid={Boolean(errors.brand_name)}>
                   <FieldLabel htmlFor="brand_name">Brand name</FieldLabel>
                   <Input
@@ -221,6 +222,7 @@ export function CreatePosterClient() {
                   />
                   <FieldError>{errors.brand_name?.message}</FieldError>
                 </Field>
+                {/* product name */}
                 <Field data-invalid={Boolean(errors.product_name)}>
                   <FieldLabel htmlFor="product_name">Product name</FieldLabel>
                   <Input
@@ -234,6 +236,7 @@ export function CreatePosterClient() {
                   />
                   <FieldError>{errors.product_name?.message}</FieldError>
                 </Field>
+                {/* product description */}
                 <Field data-invalid={Boolean(errors.product_description)}>
                   <div className="flex items-center justify-between gap-2">
                     <FieldLabel htmlFor="product_description">
@@ -257,6 +260,7 @@ export function CreatePosterClient() {
                   </FieldDescription>
                   <FieldError>{errors.product_description?.message}</FieldError>
                 </Field>
+                {/* price */}
                 <Field data-invalid={Boolean(errors.price)}>
                   <FieldLabel htmlFor="price">Price</FieldLabel>
                   <div className="relative">
@@ -276,6 +280,7 @@ export function CreatePosterClient() {
                   </div>
                   <FieldError>{errors.price?.message}</FieldError>
                 </Field>
+                {/* generate poster button */}
                 <Button type="submit" disabled={currentStatus === "processing"}>
                   {currentStatus === "processing" ? (
                     <Loader2Icon className="animate-spin" />
