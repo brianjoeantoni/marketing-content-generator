@@ -85,19 +85,20 @@ const createPosterSchema = z.object({
 
 export function CreatePosterClient() {
   const queryClient = useQueryClient();
+  // creates the React Hook Form instance
   const {
-    control,
-    handleSubmit,
-    register,
-    reset,
-    setValue,
-    formState: { errors },
+    control, // needed by useWatch
+    handleSubmit, // wraps submit and runs validation
+    register, // connects inputs to RHF
+    reset, // clears the form after success
+    setValue, // manually updates values for custom sanitizing
+    formState: { errors }, // field validation errors from Zod
   } = useForm<Draft>({
     defaultValues: starterDraft,
-    resolver: zodResolver(createPosterSchema),
+    resolver: zodResolver(createPosterSchema), // connects Zod to RHF
   });
   const watchedDraft = useWatch({ control });
-  const [generatedPoster, setGeneratedPoster] = useState<Poster | null>(null);
+  const [generatedPoster, setGeneratedPoster] = useState<Poster | null>(null); // stores the backend-created poster -> know which poster ID to poll
   const [status, setStatus] = useState<
     "idle" | "processing" | "completed" | "failed"
   >("idle");
@@ -124,9 +125,12 @@ export function CreatePosterClient() {
       setStatus("failed");
     },
   });
+
   const generatedPosterId = generatedPoster?.id;
   const shouldPollGeneratedPoster =
     Boolean(generatedPosterId) && status === "processing";
+    
+  // polling
   const { data: latestGeneratedPoster } = useQuery({
     queryKey: ["poster", generatedPosterId],
     queryFn: () => getPoster(generatedPosterId ?? ""),
@@ -137,6 +141,7 @@ export function CreatePosterClient() {
         ? false
         : 1000,
   });
+
   const currentStatus = latestGeneratedPoster?.status ?? status;
 
   const draft: Draft = useMemo(
@@ -186,10 +191,12 @@ export function CreatePosterClient() {
     }
   }, [latestGeneratedPoster, queryClient]);
 
+
+  // helper function for updating the draft
   function updateDraft(field: keyof Draft, value: string) {
     setValue(field, value, {
-      shouldDirty: true,
-      shouldValidate: Boolean(errors[field]),
+      shouldDirty: true, // marks the field as changed
+      shouldValidate: Boolean(errors[field]), // if this field already has an error, validate as the user edits it
     });
   }
 
