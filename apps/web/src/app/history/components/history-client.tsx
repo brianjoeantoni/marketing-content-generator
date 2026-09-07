@@ -113,10 +113,10 @@ export function HistoryClient() {
     queryFn: getPosters,
     // polling
     refetchInterval: (query) => {
-      const posters = query.state.data ?? []
+      const posters = query.state.data
 
       // only refetch if at any poster is processing
-      return posters.some((poster) => poster.status === "processing")
+      return posters?.some((poster) => poster.status === "processing")
         ? 1000
         : false
     },
