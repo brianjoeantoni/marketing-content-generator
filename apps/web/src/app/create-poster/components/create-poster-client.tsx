@@ -56,6 +56,7 @@ function sanitizePrice(value: string) {
   return value.replace(/[^0-9.,]/g, "");
 }
 
+// zod schema
 const createPosterSchema = z.object({
   brand_name: z
     .string()
