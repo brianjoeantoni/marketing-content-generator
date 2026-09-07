@@ -29,8 +29,8 @@ function formatPosterDate(value: string) {
 
 function HistoryDetailSkeleton() {
   return (
-    <div className="grid gap-4 px-4 pb-6 xl:grid-cols-[minmax(340px,1fr)_minmax(300px,420px)]">
-      <Card className="rounded-lg">
+    <div className="grid gap-4 px-4 pb-6 xl:grid-cols-3">
+      <Card className="rounded-lg xl:col-span-2">
         <CardHeader>
           <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <div className="space-y-2">
@@ -43,7 +43,7 @@ function HistoryDetailSkeleton() {
           </div>
         </CardHeader>
         <CardContent>
-          <Skeleton className="mx-auto aspect-square w-full max-w-[680px] rounded-lg" />
+          <Skeleton className="mx-auto aspect-square w-full max-w-2xl rounded-lg" />
         </CardContent>
       </Card>
 
@@ -107,8 +107,8 @@ export function HistoryDetailClient({ posterId }: { posterId: string }) {
   }
 
   return (
-    <div className="grid gap-4 px-4 pb-6 xl:grid-cols-[minmax(340px,1fr)_minmax(300px,420px)]">
-      <Card className="rounded-lg">
+    <div className="grid gap-4 px-4 pb-6 xl:grid-cols-4">
+      <Card className="rounded-lg xl:col-span-3">
         <CardHeader>
           <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <div>
@@ -131,13 +131,13 @@ export function HistoryDetailClient({ posterId }: { posterId: string }) {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="mx-auto w-full max-w-[680px]">
+          <div className="mx-auto w-full max-w-2xl">
             <PosterPreview poster={poster} />
           </div>
         </CardContent>
       </Card>
 
-      <Card className="rounded-lg">
+      <Card className="rounded-lg xl:col-span-1">
         <CardContent className="space-y-4">
           <div>
             <p className="text-sm font-medium">Brand</p>
