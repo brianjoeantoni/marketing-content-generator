@@ -184,10 +184,6 @@ export function CreatePosterClient() {
 
     createPosterMutation.mutate(posterInput);
   }
-
-  function onInvalid() {
-    setStatus("failed");
-  }
   
   return (
     <div className="grid gap-4 px-4 pb-6 xl:grid-cols-[minmax(340px,420px)_minmax(0,1fr)]">
@@ -210,7 +206,7 @@ export function CreatePosterClient() {
             </div>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <FieldGroup>
                 <Field data-invalid={Boolean(errors.brand_name)}>
                   <FieldLabel htmlFor="brand_name">Brand name</FieldLabel>
