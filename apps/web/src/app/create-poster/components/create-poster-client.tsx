@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm, useWatch } from "react-hook-form";
@@ -129,7 +129,7 @@ export function CreatePosterClient() {
   const generatedPosterId = generatedPoster?.id;
   const shouldPollGeneratedPoster =
     Boolean(generatedPosterId) && status === "processing";
-    
+
   // polling
   const { data: latestGeneratedPoster } = useQuery({
     queryKey: ["poster", generatedPosterId],
@@ -144,26 +144,20 @@ export function CreatePosterClient() {
 
   const currentStatus = latestGeneratedPoster?.status ?? status;
 
-  const draft: Draft = useMemo(
-    () => ({
-      brand_name: watchedDraft.brand_name ?? "",
-      product_name: watchedDraft.product_name ?? "",
-      product_description: watchedDraft.product_description ?? "",
-      price: watchedDraft.price ?? "",
-    }),
-    [watchedDraft],
-  );
-  const characterCount = useMemo(
-    () => draft.product_description.length,
-    [draft.product_description],
-  );
-  const previewDraft = useMemo(
-    () => ({
-      ...draft,
-      price: draft.price ? formatPrice(draft.price) : "",
-    }),
-    [draft],
-  );
+  const draft: Draft = {
+    brand_name: watchedDraft.brand_name ?? "",
+    product_name: watchedDraft.product_name ?? "",
+    product_description: watchedDraft.product_description ?? "",
+    price: watchedDraft.price ?? "",
+  };
+  
+  const characterCount = draft.product_description.length;
+  const previewPrice = draft.price ? formatPrice(draft.price) : "";
+
+  const previewDraft: Draft = {
+    ...draft, // copy all properties from draft into this new object
+    price: previewPrice,
+  };
 
   useEffect(() => {
     if (!latestGeneratedPoster) {
@@ -190,7 +184,6 @@ export function CreatePosterClient() {
       });
     }
   }, [latestGeneratedPoster, queryClient]);
-
 
   // helper function for updating the draft
   function updateDraft(field: keyof Draft, value: string) {
