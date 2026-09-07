@@ -5,7 +5,6 @@ import { useQuery } from "@tanstack/react-query"
 import { ImagePlusIcon } from "lucide-react"
 import Link from "next/link"
 import { toast } from "sonner"
-
 import {
   getApiErrorMessage,
   getPosters,
@@ -76,6 +75,7 @@ function PosterCard({
   )
 }
 
+// component for rendering a skeleton poster card when loading
 function HistorySkeleton() {
   return (
     <div className="grid gap-4 px-4 pb-6 md:grid-cols-2 lg:grid-cols-3">
@@ -105,7 +105,7 @@ function HistorySkeleton() {
 
 export function HistoryClient() {
   const {
-    data: posters = [],
+    data: posters,
     error: postersError,
     isLoading: isLoadingPosters,
   } = useQuery({
@@ -149,7 +149,7 @@ export function HistoryClient() {
     )
   }
 
-  if (posters.length === 0) {
+  if (posters?.length === 0) {
     return (
       <div className="px-4 pb-6">
         <Card className="rounded-lg border-dashed">
@@ -173,7 +173,7 @@ export function HistoryClient() {
   return (
     <>
       <div className="grid gap-4 px-4 pb-6 md:grid-cols-2 lg:grid-cols-3">
-        {posters.map((poster) => (
+        {posters?.map((poster) => (
           <PosterCard key={poster.id} poster={poster} />
         ))}
       </div>
