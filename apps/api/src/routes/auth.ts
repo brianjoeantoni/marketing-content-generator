@@ -75,6 +75,7 @@ authRouter.post("/register", async (req, res) => {
     VALUES ($1, $2)
     RETURNING id, email, created_at
     `,
+      // parameterized SQL to prevent SQL injection
       [emailClean, passwordHash],
     );
 
@@ -120,43 +121,51 @@ authRouter.post("/login", async (req, res) => {
     return;
   }
 
-  const result = await pool.query(
-    `
-    SELECT id, email, password_hash, created_at
-    FROM users
-    WHERE email = $1
-    `,
-    [emailClean],
-  );
+  try {
+    const result = await pool.query(
+      `
+      SELECT id, email, password_hash, created_at
+      FROM users
+      WHERE email = $1
+      `,
+      [emailClean],
+    );
 
-  const user = result.rows[0];
+    const user = result.rows[0];
 
-  if (!user) {
-    res.status(401).json({
-      // 401 Unauthorized
-      message: "Invalid email or password.",
+    if (!user) {
+      res.status(401).json({
+        // 401 Unauthorized
+        message: "Invalid email or password.",
+      });
+      return;
+    }
+
+    const passwordMatches = await bcrypt.compare(password, user.password_hash);
+
+    if (!passwordMatches) {
+      res.status(401).json({
+        message: "Invalid email or password.",
+      });
+      return;
+    }
+
+    setAuthCookie(res, user.id);
+
+    res.json({
+      user: {
+        id: user.id,
+        email: user.email,
+        created_at: user.created_at,
+      },
     });
-    return;
-  }
+  } catch (error) {
+    console.error(error);
 
-  const passwordMatches = await bcrypt.compare(password, user.password_hash);
-
-  if (!passwordMatches) {
-    res.status(401).json({
-      message: "Invalid email or password.",
+    res.status(500).json({
+      message: "Something went wrong while logging in.",
     });
-    return;
   }
-
-  setAuthCookie(res, user.id);
-
-  res.json({
-    user: {
-      id: user.id,
-      email: user.email,
-      created_at: user.created_at,
-    },
-  });
 });
 
 authRouter.get("/me", requireAuth, (req, res) => {
