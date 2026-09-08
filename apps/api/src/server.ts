@@ -8,8 +8,8 @@ import cookieParser from "cookie-parser";
 const app = express(); // creates the Express app
 const PORT = Number(process.env.PORT) || 4000;
 
-app.use(express.json()); // parses incoming requests with JSON payloads
-app.use(cookieParser()); // reads incoming cookies and makes them available later on
+app.use(express.json()); // parses incoming requests with JSON payloads, enable JSON for req.body 
+app.use(cookieParser()); // reads incoming cookies and makes them available later on, enable cookies for req.cookies
 
 // logger middleware
 app.use((req, _res, next) => {
