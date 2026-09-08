@@ -52,8 +52,8 @@ export function LoginForm() {
 
   const authMutation = useMutation({
     mutationFn: login,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["currentUser"] })
+    onSuccess: (user) => {
+      queryClient.setQueryData(["currentUser"], user)
       toast.success("Logged in successfully.", {
         description: "Redirecting to your dashboard.",
       })

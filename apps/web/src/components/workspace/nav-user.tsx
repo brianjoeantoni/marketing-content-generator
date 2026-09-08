@@ -41,8 +41,8 @@ export function NavUser() {
   const { data: currentUser } = useCurrentUser()
   const logoutMutation = useMutation({
     mutationFn: logout,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["currentUser"] })
+    onSuccess: () => {
+      queryClient.removeQueries({ queryKey: ["currentUser"] })
       toast.success("Logged out.", {
         description: "Your session has ended.",
       })

@@ -64,8 +64,8 @@ export function RegisterForm() {
 
   const registerMutation = useMutation({
     mutationFn: registerUser,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["currentUser"] })
+    onSuccess: (user) => {
+      queryClient.setQueryData(["currentUser"], user)
       toast.success("Account created.", {
         description: "Redirecting to your dashboard.",
       })
