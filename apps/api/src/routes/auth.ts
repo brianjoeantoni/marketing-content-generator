@@ -32,7 +32,7 @@ function setAuthCookie(res: Response, userId: string) {
 
   res.cookie("token", token, {
     httpOnly: true, // cookie is only accessible from the server
-    sameSite: "lax",
+    sameSite: "lax", // reduce CSRF risk by limiting when the browser sends the cookie on cross-site request
     secure: false, // Allows cookies over http://localhost. In production, this should become true because production should use HTTPS
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
