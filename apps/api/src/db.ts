@@ -4,8 +4,8 @@ const { Pool } = pg
 
 // env contains: 
 // database user
-//database password
-//host
+// database password
+// host
 // port
 // database name
 const connectionString = process.env.DATABASE_URL
