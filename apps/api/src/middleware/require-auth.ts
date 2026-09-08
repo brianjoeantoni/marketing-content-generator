@@ -47,6 +47,7 @@ async function requireAuth(req: Request, res: Response, next: NextFunction) {
       return;
     }
 
+    // can be improved by putting inside a trycatch block
     const result = await pool.query(
       `
       SELECT id, email, created_at
@@ -65,9 +66,10 @@ async function requireAuth(req: Request, res: Response, next: NextFunction) {
       return;
     }
 
-    // Add the authenticated user information onto the request object so the next route handler can use it.
+    // add the authenticated user information onto the request object so the next route handler can use it
     const authenticatedReq = req as AuthenticatedRequest;
 
+    // attach the authenticated user to the request
     authenticatedReq.user = {
       id: user.id,
       email: user.email,
