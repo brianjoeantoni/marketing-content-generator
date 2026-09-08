@@ -31,6 +31,7 @@ const loginSchema = z.object({
   password: z.string().min(8, "Password must be at least 8 characters."),
 })
 
+// create a TypeScript type from the Zod schema
 type LoginFormValues = z.infer<typeof loginSchema>
 
 export function LoginForm() {
