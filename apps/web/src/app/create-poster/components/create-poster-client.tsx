@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm, useWatch } from "react-hook-form";
 import { Loader2Icon, SendIcon } from "lucide-react";
 import { toast } from "sonner";
 import { z } from "zod";
-
 import {
   type CreatePosterInput,
   createPoster,
@@ -91,14 +90,14 @@ export function CreatePosterClient() {
     control, // needed by useWatch
     handleSubmit, // wraps submit and runs validation
     register, // connects inputs to RHF
-    reset, // clears the form after success
-    setValue, // manually updates values for custom sanitizing
+    reset, // clears the form
+    setValue, // manually updates the sanitized price
     formState: { errors }, // field validation errors from Zod
   } = useForm<Draft>({
     defaultValues: starterDraft,
     resolver: zodResolver(createPosterSchema), // connects Zod to RHF
   });
-  const watchedDraft = useWatch({ control });
+  const watchedDraft = useWatch({ control }); // live preview, updates as user types
   const [generatedPoster, setGeneratedPoster] = useState<Poster | null>(null); // stores the backend-created poster -> know which poster ID to poll
   const [status, setStatus] = useState<
     "idle" | "processing" | "completed" | "failed"
@@ -160,20 +159,11 @@ export function CreatePosterClient() {
     price: previewPrice,
   };
 
-  // helper function for updating the draft
-  function updateDraft(field: keyof Draft, value: string) {
-    setValue(field, value, {
-      shouldDirty: true, // marks the field as changed
-      shouldValidate: Boolean(errors[field]), // if this field already has an error, validate as the user edits it
-    });
-  }
-
-  function updateDescription(value: string) {
-    updateDraft("product_description", value.slice(0, descriptionMaxLength));
-  }
-
   function updatePrice(value: string) {
-    updateDraft("price", sanitizePrice(value));
+    setValue("price", sanitizePrice(value), {
+      shouldDirty: true, // marks the field as changed
+      shouldValidate: Boolean(errors.price), // if price already has an error, validate as the user edits it
+    });
   }
 
   function onSubmit(values: Draft) {
@@ -216,9 +206,6 @@ export function CreatePosterClient() {
                     id="brand_name"
                     placeholder="Sunshield"
                     {...register("brand_name")}
-                    onChange={(event) =>
-                      updateDraft("brand_name", event.target.value)
-                    }
                     aria-invalid={Boolean(errors.brand_name)}
                   />
                   <FieldError>{errors.brand_name?.message}</FieldError>
@@ -230,9 +217,6 @@ export function CreatePosterClient() {
                     id="product_name"
                     placeholder="Tropical Glow"
                     {...register("product_name")}
-                    onChange={(event) =>
-                      updateDraft("product_name", event.target.value)
-                    }
                     aria-invalid={Boolean(errors.product_name)}
                   />
                   <FieldError>{errors.product_name?.message}</FieldError>
@@ -253,7 +237,6 @@ export function CreatePosterClient() {
                     maxLength={descriptionMaxLength}
                     placeholder="SPF 50+ Broad Spectrum, Water Resistant, Lightweight, Non-Greasy Formula."
                     {...register("product_description")}
-                    onChange={(event) => updateDescription(event.target.value)}
                     aria-invalid={Boolean(errors.product_description)}
                   />
                   <FieldDescription>
