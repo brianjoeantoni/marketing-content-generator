@@ -5,7 +5,6 @@ import { useQuery } from "@tanstack/react-query";
 import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
-
 import { getApiErrorMessage, getPoster } from "@/lib/api";
 import { formatPosterDate } from "@/lib/date";
 import { PosterPreview } from "@/components/workspace/poster-preview";
