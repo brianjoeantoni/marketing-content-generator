@@ -38,7 +38,7 @@ const registerSchema = z
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Confirm password must match password.",
-    path: ["confirmPassword"],
+    path: ["confirmPassword"], // attach error to confirmPassword field
   })
 
 type RegisterFormValues = z.infer<typeof registerSchema>
