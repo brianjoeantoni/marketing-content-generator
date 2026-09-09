@@ -187,12 +187,6 @@ export function CreatePosterClient() {
                   Fill the fixed beach template with campaign copy.
                 </CardDescription>
               </div>
-              <Badge
-                variant="outline"
-                className="border-neutral-300 bg-white text-neutral-900"
-              >
-                Connected
-              </Badge>
             </div>
           </CardHeader>
           <CardContent>
