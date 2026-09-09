@@ -34,7 +34,6 @@ export function PosterPreview({
         fill
         sizes={compact ? "180px" : "(max-width: 768px) 92vw, 520px"}
         className="object-cover"
-        priority={!compact}
       />
       <div className="absolute bottom-[17%] left-[8%] right-[8%] top-[43%] flex flex-col overflow-hidden px-[4.5%] py-[4%] text-neutral-950">
         <p
