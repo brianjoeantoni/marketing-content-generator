@@ -18,7 +18,6 @@ import {
   PosterContent,
   PosterPreview,
 } from "@/components/workspace/poster-preview";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
