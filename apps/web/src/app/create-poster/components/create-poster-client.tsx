@@ -175,7 +175,7 @@ export function CreatePosterClient() {
   }
 
   return (
-    <div className="grid gap-4 px-4 pb-6 xl:grid-cols-[minmax(340px,420px)_minmax(0,1fr)]">
+    <div className="grid gap-4 px-4 pb-6 xl:grid-cols-3">
       <div>
         <Card className="rounded-lg">
           <CardHeader>
@@ -273,7 +273,7 @@ export function CreatePosterClient() {
         </Card>
       </div>
 
-      <div>
+      <div className="xl:col-span-2">
         <Card className="rounded-lg">
           <CardHeader>
             <CardTitle>Template preview</CardTitle>
