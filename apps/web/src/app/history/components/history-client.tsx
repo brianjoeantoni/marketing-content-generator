@@ -42,9 +42,9 @@ function PosterCard({
       <div className="border-t p-3">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <h2 className="line-clamp-2 text-base font-semibold leading-snug">
+            <p className="line-clamp-2 text-base font-semibold leading-snug">
               {poster.product_name}
-            </h2>
+            </p>
             <p className="mt-1 line-clamp-1 text-sm text-muted-foreground">
               {poster.brand_name}
             </p>
