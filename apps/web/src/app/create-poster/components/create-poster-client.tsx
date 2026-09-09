@@ -161,7 +161,6 @@ export function CreatePosterClient() {
 
   function updatePrice(value: string) {
     setValue("price", sanitizePrice(value), {
-      shouldDirty: true, // marks the field as changed
       shouldValidate: Boolean(errors.price), // if price already has an error, validate as the user edits it
     });
   }
