@@ -22,7 +22,7 @@ export function PosterPreview({
   return (
     <div
       className={cn(
-        "relative aspect-square w-full overflow-hidden rounded-lg border bg-white shadow-sm",
+        "relative aspect-square w-full overflow-hidden border bg-white shadow-sm",
         className
       )}
       aria-label="Generated marketing poster preview"
